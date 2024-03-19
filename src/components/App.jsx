@@ -1,23 +1,49 @@
 import React, { useState } from "react";
 import NumberButton from "./NumberButton";
 import SignButton from "./SignButton";
-import Display from "./Display";
-import SignDisplay from "./SignDisplay";
 
 const titleStyle = {
-    "text-align": "center"
+    "text-align": "center",
+    "width": "15rem"
 }
 
 function App () {
     const [input, setInput] = useState("");
     const [sign, setSign] = useState("");
+    var [res, setRes] = useState(0);
+
+    function compute (sign) {
+        var tempRes = res;
+        switch (sign) {
+            case "+":   
+                tempRes += parseInt(input);
+                setInput("");
+                break;
+            case "-":   
+                tempRes -= parseInt(input);
+                setInput("");
+                break;
+            case "*":   
+                tempRes *= parseInt(input);
+                setInput("");
+                break;
+            case "/":   
+                tempRes /= parseInt(input);
+                setInput("");
+                break;
+        }
+        return tempRes;
+    }
 
     function handleSignClick(sign) {
         if (sign === "C") {
             setInput("");
             setSign("");
+            setRes(0);
+        } else if (sign === "=") {
+            setRes(compute(sign));
         } else {
-            setSign(sign);
+            setRes(compute(sign));
         }
     }
     
@@ -27,12 +53,12 @@ function App () {
     }
 
     return <div>
-        <h1 style={titleStyle}>Simple calculator</h1>
+        <h1 style={titleStyle}>Calculator</h1>
         <div className="main-display">
             <div className="display">
                 {input}
-                <div className="sign-display">
-                    {sign}
+                <div className="sign-display flex flex-col">
+                    {sign} {res}
                 </div>
             </div>
         </div>
